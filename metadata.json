@@ -1,0 +1,5 @@
+{
+  "name": "LEELO Schedule Tracker",
+  "description": "A comprehensive schedule variance tracker comparing scheduled hours against actual time entries with visualization for overtime, undertime, and missed shifts.",
+  "requestFramePermissions": []
+}
