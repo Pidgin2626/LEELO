@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "llm-council"
+version = "0.1.0"
+description = "Ask a panel of LLMs the same hard question and get a synthesized verdict."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=0.92",
+    "openai>=1.50",
+    "click>=8.1",
+]
+
+[project.scripts]
+council = "council.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["council*"]
