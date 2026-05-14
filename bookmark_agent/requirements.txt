@@ -1,0 +1,5 @@
+playwright>=1.45
+anthropic>=0.92
+requests>=2.32
+beautifulsoup4>=4.12
+youtube-transcript-api>=0.6.2

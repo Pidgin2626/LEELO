@@ -1,0 +1,8 @@
+.auth/
+data/bookmarks.json
+data/enriched.json
+data/summary.md
+data/manual_audio/
+.venv/
+__pycache__/
+*.pyc
