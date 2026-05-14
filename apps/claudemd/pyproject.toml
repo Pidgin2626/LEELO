@@ -1,0 +1,21 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "claudemd"
+version = "0.1.0"
+description = "Generate a tailored CLAUDE.md for any project."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = [
+    "anthropic>=0.92",
+    "click>=8.1",
+]
+
+[project.scripts]
+claudemd = "claudemd.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["claudemd*"]
