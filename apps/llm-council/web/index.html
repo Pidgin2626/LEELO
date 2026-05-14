@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LLM Council</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0f0f10;
+    --panel: #1a1a1d;
+    --panel-2: #242428;
+    --border: #2e2e34;
+    --text: #e7e7ea;
+    --muted: #8a8a92;
+    --accent: #d97757;
+    --accent-fg: #1a1a1d;
+    --error: #ff6b6b;
+    --ok: #6bcf7f;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0;
+    padding: 0;
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, Cantarell, sans-serif;
+    font-size: 15px;
+    line-height: 1.5;
+  }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 32px 24px 64px;
+  }
+  h1 {
+    font-size: 28px;
+    margin: 0 0 4px;
+    letter-spacing: -0.5px;
+  }
+  .tagline {
+    color: var(--muted);
+    margin: 0 0 32px;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    margin: 16px 0 6px;
+  }
+  .caption {
+    color: var(--muted);
+    font-size: 13px;
+    margin: 0 0 12px;
+  }
+  input[type=password], textarea {
+    width: 100%;
+    background: var(--panel);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    font: inherit;
+  }
+  input[type=password]:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent);
+  }
+  textarea {
+    min-height: 110px;
+    resize: vertical;
+  }
+  button {
+    background: var(--accent);
+    color: var(--accent-fg);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 14px;
+  }
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  #status {
+    margin: 18px 0 6px;
+    padding: 10px 14px;
+    background: var(--panel);
+    border-left: 3px solid var(--border);
+    border-radius: 4px;
+    font-size: 14px;
+    color: var(--muted);
+  }
+  #status.working { border-left-color: var(--accent); color: var(--text); }
+  #status.error { border-left-color: var(--error); color: var(--error); }
+  #status.done { border-left-color: var(--ok); color: var(--ok); }
+  details {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 14px 0;
+    overflow: hidden;
+  }
+  details > summary {
+    cursor: pointer;
+    padding: 12px 16px;
+    font-weight: 600;
+    user-select: none;
+    list-style: none;
+  }
+  details > summary::-webkit-details-marker { display: none; }
+  details > summary::before {
+    content: "▸";
+    display: inline-block;
+    width: 18px;
+    color: var(--muted);
+  }
+  details[open] > summary::before {
+    content: "▾";
+  }
+  .seat {
+    border-top: 1px solid var(--border);
+    padding: 14px 16px;
+  }
+  .seat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-bottom: 8px;
+  }
+  .seat-name {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .seat-status {
+    font-size: 12px;
+    color: var(--muted);
+  }
+  .seat-status.failed { color: var(--error); }
+  .seat-status.ok { color: var(--ok); }
+  .seat-body {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 14px;
+    color: var(--text);
+    background: var(--panel-2);
+    padding: 12px 14px;
+    border-radius: 6px;
+    margin-top: 6px;
+  }
+  .verdict-body {
+    padding: 16px;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 15px;
+  }
+  .placeholder {
+    padding: 14px 16px;
+    color: var(--muted);
+    font-style: italic;
+    font-size: 14px;
+  }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>LLM Council</h1>
+  <p class="tagline">Five Claude personalities answer one question, critique each other, then a judge synthesizes a verdict.</p>
+
+  <label for="apiKey">Anthropic API key</label>
+  <input id="apiKey" type="password" placeholder="sk-ant-...">
+  <p class="caption">Your key is sent only to api.anthropic.com from your browser. It lives in this page's memory only — closing the tab forgets it. Never written to disk, localStorage, cookies, or any server.</p>
+
+  <label for="question">Question</label>
+  <textarea id="question" placeholder="Should I drop my day job and go full-time on building these apps?"></textarea>
+
+  <button id="submitBtn" onClick="runCouncil()">Run the council</button>
+
+  <div id="status">Idle.</div>
+
+  <details id="r1">
+    <summary>Round 1 — Independent Answers</summary>
+    <div id="r1Body"><div class="placeholder">No results yet.</div></div>
+  </details>
+
+  <details id="r2">
+    <summary>Round 2 — Critiques</summary>
+    <div id="r2Body"><div class="placeholder">No results yet.</div></div>
+  </details>
+
+  <details id="r3" open>
+    <summary>Round 3 — Final Verdict</summary>
+    <div id="r3Body"><div class="placeholder">No verdict yet.</div></div>
+  </details>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Personality definitions — system prompts are verbatim from council/personas.py
+// so the web and CLI versions stay in sync.
+// ---------------------------------------------------------------------------
+const PERSONAS = [
+  {
+    id: "skeptic",
+    short: "Skeptic",
+    label: "The Skeptic (Munger-style)",
+    lens: "invert the problem; what would make this fail?",
+    system:
+      "You are a brutally honest skeptic in the Charlie Munger tradition. " +
+      "Invert: instead of asking how the decision works out, ask what would " +
+      "have to be true for it to be a disaster. Cite specific failure modes. " +
+      "Flag emotional, social, or status-driven reasons the user might be " +
+      "wanting this answer to come out a particular way. Be direct, not rude.",
+  },
+  {
+    id: "operator",
+    short: "Operator",
+    label: "The Operator",
+    lens: "what does Monday morning look like?",
+    system:
+      "You are an experienced operator (chief-of-staff / COO type). Your job " +
+      "is to translate any decision into concrete next-week actions: who does " +
+      "what, what gets dropped, what's the actual cost in calendar and money. " +
+      "If the decision is abstract, you make it concrete. If it has no clear " +
+      "next step, you say so.",
+  },
+  {
+    id: "founder",
+    short: "Founder",
+    label: "The Founder (PG-style)",
+    lens: "what's the highest-upside path?",
+    system:
+      "You think like a seasoned startup founder / Paul-Graham-style " +
+      "advisor. Focus on optionality, upside, and momentum. Ask whether the " +
+      "decision opens or closes doors. Bias toward action when the downside " +
+      "is bounded and reversible; bias toward caution when it isn't. Use " +
+      "concrete examples from your experience.",
+  },
+  {
+    id: "engineer",
+    short: "Engineer",
+    label: "The First-Principles Engineer",
+    lens: "what does the math/data actually say?",
+    system:
+      "You are a first-principles engineer. Strip the decision down to its " +
+      "numbers and primitives. If the user gave you numbers, work them. If " +
+      "they didn't, ask what numbers would settle it. Refuse to be swayed by " +
+      "narrative; if the math doesn't pencil out, say so.",
+  },
+  {
+    id: "contrarian",
+    short: "Contrarian",
+    label: "The Contrarian",
+    lens: "what is everyone else missing?",
+    system:
+      "You are the contrarian on the panel. Your job is to find the " +
+      "non-obvious angle — the second-order consequence, the assumption " +
+      "everyone is taking for granted, the historical analogue that breaks " +
+      "the conventional read. Don't be contrarian for sport; be contrarian " +
+      "when you genuinely see something the consensus is missing.",
+  },
+];
+
+const MODEL = "claude-sonnet-4-20250514";
+const MAX_TOKENS = 1000;
+const API_URL = "https://api.anthropic.com/v1/messages";
+
+// ---------------------------------------------------------------------------
+// Round prompt templates
+// ---------------------------------------------------------------------------
+function round1Prompt(persona, question) {
+  return (
+    "You are sitting on a decision panel.\n\n" +
+    "Your persona: " + persona.label + "\n" +
+    "Your lens: " + persona.lens + "\n\n" +
+    "The user's question:\n---\n" + question + "\n---\n\n" +
+    "Give your independent first-round answer. Structure it as:\n\n" +
+    "**Verdict:** <one sentence: do it / don't do it / it depends>\n" +
+    "**Reasoning:** <3-6 bullets through your lens>\n" +
+    "**Strongest pro:** <one bullet>\n" +
+    "**Strongest con:** <one bullet>\n" +
+    "**What would change your mind:** <one bullet — what evidence would flip your verdict>\n\n" +
+    "Be specific to *this* question. No generic platitudes."
+  );
+}
+
+function round2Prompt(persona, question, others) {
+  const block = others
+    .map(
+      (o) =>
+        "### " + o.label + " (" + o.short + ")\n" + (o.text || "(no answer)")
+    )
+    .join("\n\n");
+  return (
+    "You are sitting on a decision panel.\n\n" +
+    "Your persona: " + persona.label + "\n" +
+    "Your lens: " + persona.lens + "\n\n" +
+    "The user's question:\n---\n" + question + "\n---\n\n" +
+    "Here are the four other panelists' first-round answers:\n\n---\n" +
+    block + "\n---\n\n" +
+    "Critique them through your lens. For each panelist:\n\n" +
+    "- Quote one specific claim they made.\n" +
+    "- Say whether you agree, disagree, or want to push deeper.\n" +
+    "- If you disagree, give your reasoning concretely.\n\n" +
+    "Then close with: **Updated verdict (or held position):** <one sentence>."
+  );
+}
+
+function round3Prompt(question, round1, round2) {
+  let transcript = "# Round 1 — independent answers\n\n";
+  for (const r of round1) {
+    transcript += "## " + r.label + " (" + r.short + ")\n" + (r.text || "(failed)") + "\n\n";
+  }
+  transcript += "# Round 2 — peer critique\n\n";
+  for (const r of round2) {
+    transcript += "## " + r.label + " critiquing the panel\n" + (r.text || "(failed)") + "\n\n";
+  }
+  return (
+    "You are the panel synthesizer / judge.\n\n" +
+    "The user's question:\n---\n" + question + "\n---\n\n" +
+    "Five panelists each gave a first-round answer, then a second-round " +
+    "critique of each other. Full transcript:\n\n---\n" + transcript + "---\n\n" +
+    "Produce a synthesized verdict in this exact markdown format. " +
+    "EXPLICITLY name the main disagreements between panelists.\n\n" +
+    "## Verdict\n<one sentence: clear yes / no / conditional>\n\n" +
+    "## Confidence\n<low | medium | high> — <one sentence justification>\n\n" +
+    "## Why\n<3-5 bullets capturing the strongest agreed-upon reasoning>\n\n" +
+    "## Main disagreements\n<2-4 bullets naming the specific points where panelists clashed and which panelist said what>\n\n" +
+    "## Strongest dissent\n<the single strongest objection any panelist raised, with attribution>\n\n" +
+    "## Conditions to revisit\n<2-4 bullets: what would have to change for the verdict to flip>\n\n" +
+    "## Next concrete step\n<one sentence — the smallest action the user can take this week>"
+  );
+}
+
+// ---------------------------------------------------------------------------
+// API call
+// ---------------------------------------------------------------------------
+async function callClaude(apiKey, system, user) {
+  let resp;
+  try {
+    resp = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": apiKey,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: MAX_TOKENS,
+        system: system,
+        messages: [{ role: "user", content: user }],
+      }),
+    });
+  } catch (e) {
+    throw new Error("Network error: " + (e && e.message ? e.message : e));
+  }
+
+  if (!resp.ok) {
+    if (resp.status === 401) throw new Error("API key is invalid (401).");
+    if (resp.status === 429) throw new Error("Rate limited (429). Wait and retry.");
+    let body = "";
+    try { body = await resp.text(); } catch (_) {}
+    throw new Error("HTTP " + resp.status + ": " + body.slice(0, 400));
+  }
+
+  const data = await resp.json();
+  if (!data || !data.content || !data.content.length) {
+    throw new Error("Empty response from API.");
+  }
+  const text = data.content
+    .filter((b) => b.type === "text")
+    .map((b) => b.text)
+    .join("");
+  return text.trim();
+}
+
+// ---------------------------------------------------------------------------
+// UI helpers
+// ---------------------------------------------------------------------------
+function $(id) { return document.getElementById(id); }
+
+function setStatus(text, cls) {
+  const s = $("status");
+  s.textContent = text;
+  s.className = cls || "";
+}
+
+function clearResults() {
+  $("r1Body").innerHTML = '<div class="placeholder">Working...</div>';
+  $("r2Body").innerHTML = '<div class="placeholder">Waiting for round 1.</div>';
+  $("r3Body").innerHTML = '<div class="placeholder">Waiting for round 2.</div>';
+  $("r1").open = true;
+  $("r2").open = false;
+  $("r3").open = true;
+}
+
+function renderRound(targetId, results) {
+  const html = results
+    .map((r) => {
+      const statusClass = r.status === "ok" ? "ok" : "failed";
+      const statusText = r.status === "ok" ? "ok" : "failed";
+      const body =
+        r.status === "ok"
+          ? '<div class="seat-body"></div>'
+          : '<div class="seat-body" style="color:var(--error)"></div>';
+      return (
+        '<div class="seat" data-id="' + r.id + '">' +
+        '<div class="seat-header">' +
+        '<span class="seat-name">' + escapeHtml(r.label) + '</span>' +
+        '<span class="seat-status ' + statusClass + '">' + statusText + '</span>' +
+        '</div>' +
+        body +
+        '</div>'
+      );
+    })
+    .join("");
+  $(targetId).innerHTML = html;
+  const container = $(targetId);
+  const seatBodies = container.querySelectorAll(".seat-body");
+  results.forEach((r, i) => {
+    seatBodies[i].textContent = r.status === "ok" ? r.text : "Failed: " + r.error;
+  });
+}
+
+function renderVerdict(text, isError) {
+  const body = $("r3Body");
+  body.innerHTML = '<div class="verdict-body"></div>';
+  const verdict = body.querySelector(".verdict-body");
+  verdict.textContent = text;
+  if (isError) verdict.style.color = "var(--error)";
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, function (c) {
+    return {
+      "&": "&amp;",
+      "<": "&lt;",
+      ">": "&gt;",
+      '"': "&quot;",
+      "'": "&#39;",
+    }[c];
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Round runners
+// ---------------------------------------------------------------------------
+async function runRound1(apiKey, question) {
+  const settled = await Promise.allSettled(
+    PERSONAS.map((p) => callClaude(apiKey, p.system, round1Prompt(p, question)))
+  );
+  return PERSONAS.map((p, i) => {
+    const s = settled[i];
+    if (s.status === "fulfilled") {
+      return { id: p.id, short: p.short, label: p.label, status: "ok", text: s.value };
+    }
+    return {
+      id: p.id,
+      short: p.short,
+      label: p.label,
+      status: "failed",
+      error: s.reason && s.reason.message ? s.reason.message : String(s.reason),
+    };
+  });
+}
+
+async function runRound2(apiKey, question, round1) {
+  const settled = await Promise.allSettled(
+    PERSONAS.map((p, i) => {
+      const others = round1.filter((_, j) => j !== i);
+      return callClaude(apiKey, p.system, round2Prompt(p, question, others));
+    })
+  );
+  return PERSONAS.map((p, i) => {
+    const s = settled[i];
+    if (s.status === "fulfilled") {
+      return { id: p.id, short: p.short, label: p.label, status: "ok", text: s.value };
+    }
+    return {
+      id: p.id,
+      short: p.short,
+      label: p.label,
+      status: "failed",
+      error: s.reason && s.reason.message ? s.reason.message : String(s.reason),
+    };
+  });
+}
+
+async function runRound3(apiKey, question, round1, round2) {
+  const prompt = round3Prompt(question, round1, round2);
+  return await callClaude(
+    apiKey,
+    "You synthesize multi-advisor decision panels. Be decisive, honest about uncertainty, and explicit about disagreements.",
+    prompt
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Main entry
+// ---------------------------------------------------------------------------
+async function runCouncil() {
+  const apiKey = $("apiKey").value.trim();
+  const question = $("question").value.trim();
+  if (!apiKey) { setStatus("Need an Anthropic API key.", "error"); return; }
+  if (!question) { setStatus("Need a question.", "error"); return; }
+
+  const btn = $("submitBtn");
+  btn.disabled = true;
+  clearResults();
+
+  try {
+    setStatus("Round 1: independent answers (5 parallel calls)...", "working");
+    const r1 = await runRound1(apiKey, question);
+    renderRound("r1Body", r1);
+
+    const r1Ok = r1.filter((r) => r.status === "ok").length;
+    if (r1Ok === 0) {
+      setStatus("Round 1: all 5 advisors failed. Stopping.", "error");
+      return;
+    }
+
+    setStatus("Round 2: cross-critique (5 parallel calls)...", "working");
+    const r2 = await runRound2(apiKey, question, r1);
+    renderRound("r2Body", r2);
+
+    setStatus("Round 3: judge verdict...", "working");
+    const verdict = await runRound3(apiKey, question, r1, r2);
+    renderVerdict(verdict, false);
+
+    setStatus("Done.", "done");
+  } catch (e) {
+    const msg = e && e.message ? e.message : String(e);
+    setStatus("Error: " + msg, "error");
+    renderVerdict("Run failed: " + msg, true);
+  } finally {
+    btn.disabled = false;
+  }
+}
+</script>
+</body>
+</html>
