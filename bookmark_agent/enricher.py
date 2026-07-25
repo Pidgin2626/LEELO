@@ -145,10 +145,10 @@ def main(in_file: Path = IN_FILE, out_file: Path = OUT_FILE) -> int:
         print(f"Missing {in_file}. Run exporter.py first.", file=sys.stderr)
         return 1
 
-    bookmarks = json.loads(in_file.read_text())
+    bookmarks = json.loads(in_file.read_text(encoding="utf-8"))
     if not bookmarks:
         print(f"{in_file} is empty — nothing to enrich.")
-        out_file.write_text("[]")
+        out_file.write_text("[]", encoding="utf-8")
         return 0
     print(f"Enriching {len(bookmarks)} bookmarks from {in_file.name}.")
 
@@ -161,7 +161,7 @@ def main(in_file: Path = IN_FILE, out_file: Path = OUT_FILE) -> int:
             print(f"    error: {e}", file=sys.stderr)
             enriched.append({**bm, "enrichment": {"error": str(e)}})
 
-    out_file.write_text(json.dumps(enriched, indent=2, ensure_ascii=False))
+    out_file.write_text(json.dumps(enriched, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Wrote {out_file}")
     return 0
 

@@ -156,7 +156,7 @@ def main() -> int:
         print("Set ANTHROPIC_API_KEY in your environment.", file=sys.stderr)
         return 1
 
-    enriched = json.loads(ENRICHED.read_text())
+    enriched = json.loads(ENRICHED.read_text(encoding="utf-8"))
     corpus = format_corpus(enriched)
     print(
         f"Analyzing {len(enriched)} bookmarks (~{len(corpus) // 4:,} tokens) "

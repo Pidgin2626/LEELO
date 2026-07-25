@@ -156,7 +156,7 @@ async def main() -> int:
 
         bookmarks = await scrape_bookmarks(page)
 
-        OUT_FILE.write_text(json.dumps(bookmarks, indent=2, ensure_ascii=False))
+        OUT_FILE.write_text(json.dumps(bookmarks, indent=2, ensure_ascii=False), encoding="utf-8")
         print(f"\nWrote {len(bookmarks)} bookmarks to {OUT_FILE}")
 
         await context.storage_state(path=str(AUTH_STATE))

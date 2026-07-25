@@ -135,7 +135,7 @@ def main(
         print("Set ANTHROPIC_API_KEY in your environment.", file=sys.stderr)
         return 1
 
-    enriched = json.loads(in_file.read_text())
+    enriched = json.loads(in_file.read_text(encoding="utf-8"))
     if not enriched:
         out_file.write_text(
             f"# {label}\n\nNo bookmarks to summarize this run.\n"

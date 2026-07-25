@@ -48,7 +48,7 @@ def _run_full() -> int:
         return rc
 
     # Record every ID as seen so the next incremental run has a baseline.
-    bookmarks = json.loads((DATA_DIR / "bookmarks.json").read_text())
+    bookmarks = json.loads((DATA_DIR / "bookmarks.json").read_text(encoding="utf-8"))
     seen = state.load_seen() | {bm["id"] for bm in bookmarks}
     state.save_seen(seen)
     print(f"\nMarked {len(seen)} total IDs as seen.")
@@ -59,7 +59,7 @@ def _run_incremental() -> int:
     if _run_export() != 0:
         return 1
 
-    all_bookmarks = json.loads((DATA_DIR / "bookmarks.json").read_text())
+    all_bookmarks = json.loads((DATA_DIR / "bookmarks.json").read_text(encoding="utf-8"))
     seen = state.load_seen()
     new_bookmarks = [bm for bm in all_bookmarks if bm["id"] not in seen]
 
@@ -79,7 +79,7 @@ def _run_incremental() -> int:
     new_enriched = DATA_DIR / f"enriched-new-{stamp}.json"
     new_summary = DATA_DIR / f"summary-new-{stamp}.md"
 
-    new_in.write_text(json.dumps(new_bookmarks, indent=2, ensure_ascii=False))
+    new_in.write_text(json.dumps(new_bookmarks, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"Wrote {len(new_bookmarks)} new bookmarks to {new_in.name}")
 
     print("\n" + "=" * 60)
