@@ -58,6 +58,28 @@ State:
 
 - `state/seen_ids.json` — tweet IDs already enriched; drives the diff
 
+## Extra analyses
+
+Once you have `data/enriched.json`, you can slice the same corpus
+through other Claude prompts:
+
+```bash
+python analyzer.py tools           # -> data/tools.md
+python analyzer.py contradictions  # -> data/contradictions.md
+```
+
+- **tools** — extracts every product / API / library / MCP server mentioned
+  across your bookmarks, ranks the top 5 to try this week with a specific
+  action for each, then lists everything alphabetically with a "skip list"
+  at the end.
+- **contradictions** — finds real disagreements between the accounts you
+  follow, quotes both sides, and calls which one is likely right for
+  your specific goals.
+
+Both reuse `data/enriched.json` — so once your bookmark corpus is
+enriched, adding a new analysis costs one Claude call, not a whole
+pipeline rerun.
+
 ## Limitations
 
 - **X-hosted video clips** can't be auto-transcribed (no public transcript

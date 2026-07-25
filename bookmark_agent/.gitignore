@@ -5,6 +5,8 @@ data/enriched.json
 data/enriched-new-*.json
 data/summary.md
 data/summary-new-*.md
+data/tools.md
+data/contradictions.md
 data/manual_audio/
 state/
 .venv/
