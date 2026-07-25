@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>LEELO Control</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+  :root {
+    color-scheme: dark;
+    --bg: #0f0f10;
+    --panel: #1a1a1d;
+    --panel-2: #242428;
+    --border: #2e2e34;
+    --text: #e7e7ea;
+    --muted: #8a8a92;
+    --accent: #d97757;
+    --accent-fg: #1a1a1d;
+    --error: #ff6b6b;
+    --ok: #6bcf7f;
+  }
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+    font-size: 15px; line-height: 1.5;
+  }
+  .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px 64px; }
+  h1 { font-size: 32px; margin: 0 0 4px; letter-spacing: -0.5px; }
+  h2 { font-size: 20px; margin: 32px 0 12px; letter-spacing: -0.3px; }
+  .tagline { color: var(--muted); margin: 0 0 24px; }
+
+  .keybar {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 14px; margin-bottom: 8px;
+  }
+  .keybar label { font-size: 13px; color: var(--muted); flex-shrink: 0; }
+  .keybar input {
+    flex: 1; background: transparent; color: var(--text);
+    border: none; font: inherit; outline: none;
+  }
+  .keybar .status { font-size: 12px; color: var(--muted); }
+  .keybar .status.ok { color: var(--ok); }
+
+  .caption { color: var(--muted); font-size: 12px; margin: 0 0 16px; }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 14px;
+  }
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+    display: flex; flex-direction: column;
+  }
+  .card .icon { font-size: 28px; line-height: 1; margin-bottom: 8px; }
+  .card .title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .card .desc { color: var(--muted); font-size: 13px; margin-bottom: 12px; flex: 1; }
+  .card .cmd {
+    background: var(--panel-2); border: 1px solid var(--border);
+    border-radius: 6px; padding: 8px 10px;
+    font-family: "SF Mono", Consolas, monospace; font-size: 12px;
+    white-space: pre-wrap; word-break: break-word;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+  .card .actions { display: flex; gap: 6px; }
+  .card .actions button, .card .actions a {
+    background: var(--panel-2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 10px; font: inherit; font-size: 12px;
+    cursor: pointer; text-decoration: none; display: inline-block;
+  }
+  .card .actions button:hover, .card .actions a:hover { border-color: var(--accent); }
+  .card .actions button.copied { border-color: var(--ok); color: var(--ok); }
+
+  .reports { display: flex; flex-direction: column; gap: 6px; }
+  .reports a {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 16px;
+    color: var(--text); text-decoration: none; font-size: 14px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .reports a:hover { border-color: var(--accent); }
+  .reports .emoji { font-size: 20px; }
+
+  .chat {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 16px;
+    display: flex; flex-direction: column; gap: 12px;
+  }
+  .transcript {
+    min-height: 60px; max-height: 400px; overflow-y: auto;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .msg {
+    padding: 10px 12px; border-radius: 8px;
+    max-width: 92%; white-space: pre-wrap; word-wrap: break-word; font-size: 14px;
+  }
+  .msg.user { background: var(--panel-2); align-self: flex-end; }
+  .msg.assistant { background: transparent; border: 1px solid var(--border); align-self: flex-start; }
+  .msg.error { border: 1px solid var(--error); color: var(--error); align-self: flex-start; }
+  .msg .role { font-size: 11px; color: var(--muted); margin-bottom: 4px; }
+  .msg pre {
+    background: rgba(0,0,0,0.35); padding: 8px 10px; border-radius: 6px;
+    overflow-x: auto; font-size: 12px; margin: 6px 0;
+  }
+  .msg code:not(pre code) {
+    background: rgba(0,0,0,0.35); padding: 1px 5px; border-radius: 4px;
+    font-size: 12px;
+  }
+  .composer { display: flex; gap: 8px; align-items: flex-end; }
+  .composer textarea {
+    flex: 1; background: var(--panel-2); color: var(--text);
+    border: 1px solid var(--border); border-radius: 8px;
+    padding: 10px 12px; font: inherit; resize: vertical; min-height: 60px;
+  }
+  .composer textarea:focus { outline: none; border-color: var(--accent); }
+  .composer button {
+    background: var(--accent); color: var(--accent-fg); border: none;
+    border-radius: 8px; padding: 12px 18px; font: inherit; font-weight: 600;
+    cursor: pointer;
+  }
+  .composer button:disabled { opacity: 0.5; cursor: not-allowed; }
+  .placeholder-msg { color: var(--muted); font-size: 13px; font-style: italic; }
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>LEELO Control</h1>
+  <p class="tagline">Your toolkit, one page. Cards to launch tools. Reports to read. A CEO to ask when you're stuck.</p>
+
+  <div class="keybar">
+    <label>Anthropic API key</label>
+    <input id="apiKey" type="password" placeholder="sk-ant-... (needed only for the CEO chat)">
+    <span id="keyStatus" class="status">not set</span>
+  </div>
+  <p class="caption">Key lives in this page's memory only — not written to disk, cookies, or localStorage. Closing the tab forgets it. Only used by the CEO chat below.</p>
+
+  <h2>Your tools</h2>
+  <div class="grid" id="toolsGrid"></div>
+
+  <h2>Your reports</h2>
+  <div class="reports">
+    <a href="../../bookmark_agent/data/summary.md" target="_blank"><span class="emoji">📋</span><span><b>summary.md</b> — themes from your bookmarks + 11 app ideas</span></a>
+    <a href="../../bookmark_agent/data/tools.md" target="_blank"><span class="emoji">🛒</span><span><b>tools.md</b> — top 5 tools to try, full list, skip list</span></a>
+    <a href="../../bookmark_agent/data/contradictions.md" target="_blank"><span class="emoji">⚖️</span><span><b>contradictions.md</b> — where your sources disagree, and who wins</span></a>
+  </div>
+
+  <h2>Ask CEO</h2>
+  <div class="chat">
+    <div class="transcript" id="transcript">
+      <div class="placeholder-msg">Type where you're stuck or what you're trying to do. I'll tell you which of your tools to use and give you the exact command.</div>
+    </div>
+    <div class="composer">
+      <textarea id="userMsg" placeholder="e.g. I have a contract from a vendor I want to review before signing."></textarea>
+      <button id="sendBtn" onClick="ask()">Ask</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ---------------------------------------------------------------------------
+// Tool catalog — rendered as cards and shown to the CEO chat as context.
+// ---------------------------------------------------------------------------
+const TOOLS = [
+  {
+    icon: "🧭",
+    name: "claudemd",
+    desc: "Generate a tailored CLAUDE.md config for any project folder. Interview + repo scan.",
+    cmd: "cd C:\\path\\to\\your\\project; claudemd init",
+    when: "Starting a new project. Or you want Claude to auto-know your preferences in a folder.",
+    extras: [
+      { label: "audit existing", cmd: "cd C:\\path\\to\\project; claudemd audit" },
+    ],
+  },
+  {
+    icon: "🏛️",
+    name: "council (CLI)",
+    desc: "5 Claude personalities debate a hard decision. 3 rounds. Verdict with dissent.",
+    cmd: "council ask \"Should I take this job offer at 60% pay for 0.5% equity?\" --solo",
+    when: "A hard decision where you want multiple perspectives and a real verdict.",
+    extras: [
+      { label: "see history", cmd: "council log" },
+      { label: "replay #1", cmd: "council show 1 --full" },
+    ],
+  },
+  {
+    icon: "🌐",
+    name: "council (web)",
+    desc: "Same panel, in a browser. Click, paste key, type question, click Run.",
+    launch: "../llm-council/web/index.html",
+    when: "You prefer clicking over typing terminal commands.",
+  },
+  {
+    icon: "📥",
+    name: "bookmark pipeline — full",
+    desc: "Scrapes your X bookmarks, enriches links, and asks Claude to propose apps.",
+    cmd: "cd C:\\Users\\johnm\\LEELO\\bookmark_agent; .\\.venv\\Scripts\\Activate.ps1; python run.py",
+    when: "Once every few weeks. Refresh your themes / app-idea backlog.",
+  },
+  {
+    icon: "⚡",
+    name: "bookmark pipeline — incremental",
+    desc: "Only enriches and summarizes bookmarks new since the last run. Cheap.",
+    cmd: "cd C:\\Users\\johnm\\LEELO\\bookmark_agent; .\\.venv\\Scripts\\Activate.ps1; python run.py --incremental",
+    when: "Weekly. See what new saves changed the picture.",
+  },
+  {
+    icon: "🛒",
+    name: "analyzer — tools",
+    desc: "Extracts every product/API/MCP mentioned in your bookmarks. Ranked.",
+    cmd: "cd C:\\Users\\johnm\\LEELO\\bookmark_agent; .\\.venv\\Scripts\\Activate.ps1; python analyzer.py tools",
+    when: "After a fresh bookmark run, when you want a shopping list.",
+  },
+  {
+    icon: "⚖️",
+    name: "analyzer — contradictions",
+    desc: "Finds topics where your bookmarks disagree with each other. Picks a side.",
+    cmd: "cd C:\\Users\\johnm\\LEELO\\bookmark_agent; .\\.venv\\Scripts\\Activate.ps1; python analyzer.py contradictions",
+    when: "When you feel like your bookmarks are giving you conflicting advice.",
+  },
+];
+
+// ---------------------------------------------------------------------------
+// Render tool cards
+// ---------------------------------------------------------------------------
+function renderTools() {
+  const grid = document.getElementById("toolsGrid");
+  grid.innerHTML = TOOLS.map((t, i) => {
+    const cmdBlock = t.cmd
+      ? `<div class="cmd">${escapeHtml(t.cmd)}</div>`
+      : "";
+    const copyBtn = t.cmd
+      ? `<button data-i="${i}" data-cmd="main" onClick="copyCmd(this)">Copy command</button>`
+      : "";
+    const launchBtn = t.launch
+      ? `<a href="${t.launch}" target="_blank">Open →</a>`
+      : "";
+    const extras = (t.extras || [])
+      .map(
+        (e, j) =>
+          `<button data-i="${i}" data-cmd="extra-${j}" onClick="copyCmd(this)">Copy: ${escapeHtml(e.label)}</button>`
+      )
+      .join("");
+    return `<div class="card">
+      <div class="icon">${t.icon}</div>
+      <div class="title">${escapeHtml(t.name)}</div>
+      <div class="desc">${escapeHtml(t.desc)}</div>
+      ${cmdBlock}
+      <div class="actions">${copyBtn}${launchBtn}${extras}</div>
+    </div>`;
+  }).join("");
+}
+
+async function copyCmd(btn) {
+  const i = parseInt(btn.dataset.i, 10);
+  const which = btn.dataset.cmd;
+  const tool = TOOLS[i];
+  const text =
+    which === "main" ? tool.cmd :
+    tool.extras[parseInt(which.split("-")[1], 10)].cmd;
+  try {
+    await navigator.clipboard.writeText(text);
+    const orig = btn.textContent;
+    btn.textContent = "Copied ✓";
+    btn.classList.add("copied");
+    setTimeout(() => { btn.textContent = orig; btn.classList.remove("copied"); }, 1400);
+  } catch (e) {
+    alert("Copy failed. Command was:\n\n" + text);
+  }
+}
+
+function escapeHtml(s) {
+  return String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
+
+renderTools();
+
+// ---------------------------------------------------------------------------
+// API key status
+// ---------------------------------------------------------------------------
+const apiKeyInput = document.getElementById("apiKey");
+apiKeyInput.addEventListener("input", () => {
+  const status = document.getElementById("keyStatus");
+  if (apiKeyInput.value.trim()) {
+    status.textContent = "set ✓";
+    status.classList.add("ok");
+  } else {
+    status.textContent = "not set";
+    status.classList.remove("ok");
+  }
+});
+
+// ---------------------------------------------------------------------------
+// CEO chat — Claude with a system prompt describing every tool.
+// ---------------------------------------------------------------------------
+const MODEL = "claude-sonnet-4-20250514";
+const API_URL = "https://api.anthropic.com/v1/messages";
+
+function buildToolsManifest() {
+  return TOOLS.map((t) => {
+    const lines = [
+      `TOOL: ${t.name}`,
+      `WHAT: ${t.desc}`,
+      `WHEN: ${t.when}`,
+    ];
+    if (t.cmd) lines.push(`COMMAND: ${t.cmd}`);
+    if (t.launch) lines.push(`LAUNCH: double-click ${t.launch}`);
+    if (t.extras) {
+      for (const e of t.extras) lines.push(`ALSO (${e.label}): ${e.cmd}`);
+    }
+    return lines.join("\n");
+  }).join("\n\n");
+}
+
+const CEO_SYSTEM = `You are LEELO Control — John's CEO agent. John is a beginner coder on Windows PowerShell running a personal AI toolkit he built.
+
+Here is John's toolkit — every command below can be pasted into PowerShell:
+
+${buildToolsManifest()}
+
+REPORTS John already has generated (Markdown files on his disk):
+- bookmark_agent/data/summary.md — themes from his X bookmarks + 11 candidate app ideas
+- bookmark_agent/data/tools.md — top 5 tools to try + full alphabetical list + skip list
+- bookmark_agent/data/contradictions.md — 2 genuine disagreements in what he follows + picked winners
+
+YOUR JOB when John talks to you:
+1. Figure out what he actually needs. Ask ONE clarifying question only if the answer changes what you recommend. Otherwise commit.
+2. Pick the right tool from the list above (or the right report to read).
+3. Reply in this shape:
+   - One line: the tool or report to use, and why (very short).
+   - A code block with the EXACT command John should paste, OR a link to open.
+   - One line: what he'll see when it works.
+4. If no tool fits, just answer his question directly — briefly.
+5. If he wants a NEW tool built, name that clearly ("that would be a new build") and suggest he tell you to start it in a fresh message.
+
+Tone: terse, direct, warm. John is overwhelmed by his own toolkit. Don't lecture. Never repeat back what he just said. Never say "great question." Give him the one action.`;
+
+const messages = [];
+
+function appendMessage(role, text, cls) {
+  const t = document.getElementById("transcript");
+  if (t.querySelector(".placeholder-msg")) t.innerHTML = "";
+  const el = document.createElement("div");
+  el.className = "msg " + (cls || role);
+  const roleLabel = document.createElement("div");
+  roleLabel.className = "role";
+  roleLabel.textContent = role === "user" ? "you" : (role === "assistant" ? "CEO" : "error");
+  const body = document.createElement("div");
+  body.innerHTML = renderMarkdown(text);
+  el.appendChild(roleLabel);
+  el.appendChild(body);
+  t.appendChild(el);
+  t.scrollTop = t.scrollHeight;
+  return body;
+}
+
+function renderMarkdown(text) {
+  const escaped = escapeHtml(text);
+  return escaped
+    .replace(/```([\s\S]*?)```/g, (_, code) => `<pre>${code}</pre>`)
+    .replace(/`([^`]+)`/g, (_, code) => `<code>${code}</code>`)
+    .replace(/\*\*([^*]+)\*\*/g, (_, b) => `<b>${b}</b>`)
+    .replace(/\n/g, "<br>");
+}
+
+async function ask() {
+  const key = apiKeyInput.value.trim();
+  const msg = document.getElementById("userMsg").value.trim();
+  if (!key) { appendMessage("error", "Set your Anthropic API key up top first.", "error"); return; }
+  if (!msg) return;
+
+  document.getElementById("userMsg").value = "";
+  appendMessage("user", msg);
+  messages.push({ role: "user", content: msg });
+
+  const sendBtn = document.getElementById("sendBtn");
+  sendBtn.disabled = true;
+  const bodyEl = appendMessage("assistant", "…");
+
+  try {
+    const resp = await fetch(API_URL, {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+        "x-api-key": key,
+        "anthropic-version": "2023-06-01",
+        "anthropic-dangerous-direct-browser-access": "true",
+      },
+      body: JSON.stringify({
+        model: MODEL,
+        max_tokens: 1500,
+        system: CEO_SYSTEM,
+        messages: messages,
+      }),
+    });
+    if (!resp.ok) {
+      let body = ""; try { body = await resp.text(); } catch(_) {}
+      if (resp.status === 401) throw new Error("Your API key was rejected (401).");
+      if (resp.status === 429) throw new Error("Rate limited (429). Wait a moment and retry.");
+      throw new Error("HTTP " + resp.status + ": " + body.slice(0, 300));
+    }
+    const data = await resp.json();
+    const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("").trim();
+    if (!text) throw new Error("Empty response from Claude.");
+    messages.push({ role: "assistant", content: text });
+    bodyEl.innerHTML = renderMarkdown(text);
+  } catch (e) {
+    bodyEl.parentElement.classList.remove("assistant");
+    bodyEl.parentElement.classList.add("error");
+    bodyEl.textContent = "Error: " + (e.message || e);
+    messages.pop();
+  } finally {
+    sendBtn.disabled = false;
+  }
+}
+
+document.getElementById("userMsg").addEventListener("keydown", (e) => {
+  if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); ask(); }
+});
+</script>
+</body>
+</html>
