@@ -1,208 +1,237 @@
 # Bookmark Analysis
 
-Generated from 105 bookmarks.
+Generated from 128 bookmarks.
 
 ## Themes
 
 # Bookmark Themes
 
-## Theme: Claude Power-User Setup & Workflows
-**Bookmarks:** 2, 7, 8, 12, 18, 23, 26, 29, 32, 33, 35, 36, 40, 45, 57
+## Theme: Claude Power-User Workflows & Setup
 
-The user is deeply invested in mastering Claude as a daily driver — specifically the CLAUDE.md config file, Projects/Cowork mode, Skills, and token-efficiency tricks. They keep saving "the exact setup" tweets from Boris Cherny and Anthropic team workshops, suggesting they want a definitive, no-fluff blueprint for configuring Claude once and barely prompting again.
+**Bookmarks:** 3, 5, 10, 11, 15, 16, 17, 19, 27, 28, 32, 33, 37, 43, 48, 51, 54, 56, 57, 58, 59, 60, 64, 69, 81, 84, 100
 
-## Theme: Zero-Headcount AI Agent Companies
-**Bookmarks:** 4, 6, 15, 16, 17, 21, 28, 53, 68, 69, 70, 76
+The user is obsessed with squeezing maximum value out of Claude (especially Claude Code and "Cowork" mode) — CLAUDE.md configs, Skills, Projects, second-brain setups, token efficiency, and the exact file structures top users maintain. They keep bookmarking "here's how the top 1% actually configure Claude" content, suggesting they want a repeatable, systematized personal setup rather than ad-hoc prompting.
 
-The recurring fantasy here is running an entire business with a single human and a fleet of autonomous agents — overnight workers, AI chiefs of staff, life-OS dashboards, and Cofounder-2-style orchestration. The user is attracted to concrete examples (HVAC speed-to-lead, tea-store scheduling, grandma demos) more than abstract theory.
+## Theme: Autonomous AI Agents & One-Person Companies
 
-## Theme: AI Marketing & Ad Creative Automation
-**Bookmarks:** 5, 10, 13, 22, 27, 30, 34, 38, 39, 43, 44, 46, 47, 50, 74, 86
+**Bookmarks:** 2, 4, 22, 29, 31, 40, 41, 42, 46, 53, 77, 92, 93, 94
 
-A consistent interest in turning a product URL or brand into ready-to-ship ad creative, Reels scripts, Meta/Google Ads campaigns, and a month of social content with minimal human input. They save tools like Spoki, NanoBanana, Pika MCP, and Meta Ads MCP — anyone shipping "URL in → ads/campaigns out" workflows.
+Recurring fascination with agents that run overnight, spawn subagents, and replace whole roles (engineer, chief of staff, ops team). The user is drawn to the "one-human CEO with AI employees" vision — Cofounder 2, openclaw, /goal, agentic loops — and dashboards that unify life/business operations.
 
-## Theme: Personal Finance & Life Operations via AI
-**Bookmarks:** 28, 41, 42, 55, 80, 84
+## Theme: AI-Powered Marketing, Ads & Content Ops
 
-The user wants Claude/ChatGPT to act as a personal CFO, therapist, and life dashboard — categorizing bank statements, building a wealth OS, psychological self-analysis, memory export, and cloning their own working style into an AI twin. The thread is "outsource the boring, repetitive parts of being me."
+**Bookmarks:** 14, 20, 21, 30, 35, 38, 47, 49, 52, 55, 62, 63, 67, 68, 70, 71, 74, 98, 109
 
-## Theme: Prompt Frameworks & Prompt Libraries
-**Bookmarks:** 31, 49, 60, 66, 72, 73, 75, 77, 85, 87, 88, 89, 91, 93, 96, 104, 105
+Strong operator/agency mindset: building ad creatives from a URL, Meta Ads MCP, Google Ads audits inside Claude, scraping Google Maps + cold outreach, social scheduling on autopilot, Pixar-style ad workflows, IG carousels. Focused on replacing $2K/mo agency deliverables with Claude workflows for DTC/local-service businesses.
 
-A heavy collector of "7/10/15 prompts that…" lists, role-reversal techniques, R-T-F/T-A-G frameworks, Google's 71-page prompt guide, and Karpathy's second-brain prompts. The underlying problem: they don't have a personal, organized prompt library — they keep bookmarking the same archetypes hoping one will stick.
+## Theme: SEO & Local Service Business Automation
 
-## Theme: AI Agent Building Blocks & Tools
-**Bookmarks:** 11, 20, 22, 24, 48, 71, 81, 83, 90, 103
+**Bookmarks:** 24, 34, 35, 39, 49, 102
 
-Saves about specific releases that become Lego pieces for builders: Claude for Office, Pika MCP, Meta Ads MCP/CLI, Chatterbox Turbo (open-source voice), Firebase Studio, Google Stitch, Antigravity, the lead-scraping cold email tool. They're tracking the agent tooling layer — APIs, MCPs, and integrations to wire together.
+Interest in "18-year-old scrapes Google Maps and spins up websites" style plays — combining Claude + SEO + local business lead-gen (HVAC, roofing, landscaping). The user is watching a specific arbitrage: undermarketed local businesses that can be captured with AI-generated sites, cold outreach, and speed-to-lead agents.
 
-## Theme: SEO & Content Engine Hustles
-**Bookmarks:** 9, 14, 27, 30, 43, 50, 74, 78, 86
+## Theme: Prompt Engineering Techniques & Frameworks
 
-Repeated saves of "Claude + SEO will make millionaires" and AI content-at-scale plays — viral short-form channels, Reels voiceovers, 30-day content calendars in 2 hours. The user wants a content/SEO machine that runs largely without them, possibly as a side income stream.
+**Bookmarks:** 8, 12, 23, 50, 84, 97, 108, 110, 111, 112, 114, 116, 119, 127, 128
+
+Collector of prompt frameworks (R-T-F, T-A-G, role reversal), multi-agent debate patterns (Council, LLM Council, Red Team Mode), and specialized prompt libraries (contract review, first-principles, psychological analysis). Wants a library of proven, structured prompts rather than freeform chatting.
+
+## Theme: Personal Life OS & Second Brain
+
+**Bookmarks:** 3, 10, 11, 18, 37, 53, 56, 65, 66, 79, 90, 104
+
+Recurring desire to turn Claude into a life operating system: personal finance triage from bank statements, home organization, ADHD executive-function support, wealth dashboards, memory/context export, learning brain, psychological self-analysis. The user wants one unified personal dashboard connecting calendar, tasks, goals, finances, and health.
+
+## Theme: AI Foundations, Predictions & Big-Picture Lectures
+
+**Bookmarks:** 6, 9, 28, 44, 75, 76, 77, 91, 95, 115
+
+Watches long-form thinkers (Hinton, Karpathy, Musk, game theory professors, Joe Rogan-style content) and Anthropic's economic labor charts. Interested in where AI is going and the macro implications — used to justify the aggressive tooling adoption seen in other themes.
+
+## Theme: Voice, Video & Multimodal AI Tools
+
+**Bookmarks:** 45, 52, 55, 70, 72, 87, 105, 117, 126
+
+Tracking generative tooling beyond text: Pika MCP for AI personas, Chatterbox Turbo for voice cloning, Google Stitch for UI generation, Firebase Studio, NanoBanana 2 for ads. Interested in composable multimodal building blocks to plug into their agent stacks.
 
 ## Theme: Off-Topic Personal Interests
-**Bookmarks:** 19, 51, 52, 61, 64, 67, 79, 92, 94, 95, 97, 99, 100, 101, 102
 
-A grab-bag: golf swing fixes, hip mobility, game theory podcasts, Mahomes/Chiefs drama, Elon predictions, Charlie Brown sentimentality, fringe health takes. Not a project signal — context that the user is a generalist consumer, possibly a hobbyist golfer and sports fan.
+**Bookmarks:** 1, 7, 13, 26, 44, 61, 78, 82, 83, 85, 86, 88, 89, 91, 103, 106, 118, 120, 121, 122, 123, 124, 125
 
-## Theme: Investing & Due Diligence
-**Bookmarks:** 54, 62, 65, 82, 105
-
-Saves include a real-estate DD checklist, stock picks ($EOSE et al.), Kobeissi macro posts, and an AI stock-prediction script. The user has a real interest in investment research workflows — particularly templated, exhaustive checklists and AI-assisted analysis.
+Miscellaneous saves: a task dashboard design reference, golf swing tips, tight-hips mobility, Brad Pitt/Tarantino, Kobeissi Letter finance posts, real-estate DD checklist, Charlie Brown, Chamath's Model Y take. Signal noise but hints at side interests (golf, health, investing, product/UX design).
 
 ## App Ideas
 
-### App 1: AdForge — URL-to-Ad-Creative Pipeline
+### App 1: Cowork Bootstrapper — one-command Claude Code project scaffolder
 
-- **One-line pitch**: Drop a product page URL and get a full brand guide plus 5 ready-to-run ad creatives (image + copy) for Meta/Google.
-- **Motivating bookmarks**: 5, 13, 22, 38, 44, 46, 47
+- **One-line pitch**: A CLI that scaffolds a fully-configured Claude Code workspace (CLAUDE.md, skills/, subagents, hooks, MCP config) from a short interview about the user's role and business.
+- **Motivating bookmarks**: 32, 33, 43, 48, 57, 58, 60, 64, 81, 19
 - **Core features**:
-  - Scrape product URL → extract logos, fonts, colors, product images, benefits, audience, price (Playwright + readability + Claude extraction)
-  - Auto-build creative brief JSON (positioning, hooks, target persona)
-  - Spawn parallel ad variants in distinct styles (Pixar, UGC screenshot, "stop-scroll" hook, problem/solution, social proof) using Nano Banana / Imagen
-  - Generate matching voiceover scripts and short-form video with first-2-second hooks
-  - One-click push to Meta Ads via the official Meta Ads MCP
-- **Stack**: Next.js + tRPC; Playwright for scraping; Claude Sonnet 4.5 for extraction/copy; Nano Banana 2 / Gemini Image for visuals; Meta Marketing API + Meta Ads MCP; Google Ads API.
-- **Scope**: medium — significant integration work but every piece exists and has an official API.
-- **First milestone**: URL in → JSON brand guide + 1 static ad creative + 3 headline variants, rendered in a preview UI.
+  - Interactive wizard that generates `CLAUDE.md`, `about-me.md`, `outputs/`, `context/`, and `skills/` folders following Boris Cherny's structure
+  - Ships preset "role packs" (SEO writer, ads operator, indie founder, chief of staff) that inject appropriate skills and subagents
+  - Auto-installs recommended MCP servers (filesystem, git, browser, Meta Ads, Google Drive) with OAuth walkthroughs
+  - Token-diet mode: injects the terse-output CLAUDE.md directives that cut output ~60%
+  - Update command that re-syncs to the latest Anthropic official plugin recommendations (`claude-code-setup` style)
+- **Stack**: Node.js + `commander`/`clack` for the CLI, TypeScript, Claude Agent SDK, Zod for schema, GitHub Releases for role-pack distribution
+- **Scope**: small — mostly file templating + a wizard; no heavy backend.
+- **First milestone**: `npx cowork-init` produces a working `.claude/` folder with CLAUDE.md, one skill, and one subagent, and Claude Code picks it up on first run.
 
-### App 2: Speed-to-Lead Agent for Local Service Businesses
+---
 
-- **One-line pitch**: An AI SDR that responds to inbound leads (Yelp, web forms, Google) in under 60 seconds with qualifying questions and booking links.
-- **Motivating bookmarks**: 10, 24, 34
+### App 2: LLM Council — multi-advisor debate skill with peer review
+
+- **One-line pitch**: A drop-in Claude skill that spawns 5 configurable "advisors," makes them attack a decision from different angles, peer-review each other, and return a single ranked verdict.
+- **Motivating bookmarks**: 12, 50, 69
 - **Core features**:
-  - Webhook ingestion from Yelp, Google LSA, Jotform, Facebook Lead Ads, Twilio SMS
-  - LLM-generated first-touch SMS/email tailored to the lead's complaint or request, within ~30s
-  - Conversational qualification flow → Google/Outlook calendar booking
-  - WhatsApp + SMS multichannel via Twilio / WhatsApp Business API
-  - Owner dashboard: response times, conversion %, transcripts, escalation triggers
-- **Stack**: Node/TypeScript on Cloudflare Workers; Twilio (SMS + WhatsApp); Claude Sonnet 4.5; Postgres (Supabase); Cal.com or Google Calendar API; Yelp Fusion + Google Business API.
-- **Scope**: medium — well-defined verticals (HVAC, plumbing, roofing) make scoping easy.
-- **First milestone**: Webhook from a single lead source → SMS reply in <60s using a per-business "company profile" prompt.
+  - `/council <question>` command that fans out to 5 subagents with distinct personas (skeptic, operator, investor, customer, first-principles)
+  - Structured peer-review pass where each advisor grades the others' arguments and flags weak reasoning
+  - Verdict synthesizer that outputs: recommendation, dissenting view, confidence, and the single riskiest assumption
+  - Persona library editable as markdown; users can swap in "Paul Graham," "your CFO," etc.
+  - Saves every council session to a searchable `decisions/` log with the final call and why
+- **Stack**: Claude Agent SDK subagents, TypeScript, SQLite for decision log, Markdown-based persona definitions, optional Obsidian export
+- **Scope**: small — pure orchestration on top of Claude Code.
+- **First milestone**: One command runs 5 parallel personas on a real question and returns a synthesized verdict in under 2 minutes.
 
-### App 3: Complaint-Mining Cold Outreach Tool
+---
 
-- **One-line pitch**: Type a niche + city, scrape every matching business and its negative reviews, then generate cold emails referencing exactly what their customers are complaining about.
-- **Motivating bookmarks**: 24
+### App 3: AdForge — product-URL-to-6-ad-creatives pipeline
+
+- **One-line pitch**: Paste a product page URL, get a complete brand guide plus 6 ready-to-run static/carousel ads with copy variations.
+- **Motivating bookmarks**: 20, 30, 62, 70, 71, 21, 38, 47
 - **Core features**:
-  - Google Maps + Yelp scraping with 50+ enrichment fields (owner name, domain, tech stack, ad spend signals)
-  - Review crawler that pulls 1–3 star reviews and extracts recurring themes via Claude
-  - Pain-point clusterer ("slow response", "rude staff", "bad website")
-  - Email generator that opens with a specific cited complaint, ties it to a service offer
-  - Domain warmup + send via Instantly/Smartlead API; CRM export
-- **Stack**: Python + Playwright + ScrapingBee; SerpAPI for Maps; Claude Haiku for review summarization; Instantly API for sending; Postgres.
-- **Scope**: medium — anti-scraping mitigation is the main risk.
-- **First milestone**: CLI that takes "dentists in Austin" → CSV of 50 businesses with top 3 complaints per business.
+  - Scrapes URL and extracts logo, product images, palette, fonts, benefits, audience, positioning, price
+  - Auto-builds a brand guide JSON (voice, tone, do/don't)
+  - Generates 6 creative concepts (before/after, testimonial, feature-benefit, UGC-style, comparison, Pixar-style)
+  - Renders finished images with Nano Banana 2 / Gemini image API and typography overlays
+  - Optional Meta Ads MCP push: creates draft campaigns with creatives, headlines, and audiences pre-filled
+- **Stack**: Node.js/TypeScript, Playwright for scraping, Claude for copy/brief, Nano Banana 2 or Gemini 2.5 image API, Meta Marketing API + Meta Ads MCP, Sharp for compositing
+- **Scope**: medium — real scraping, image gen, and Meta API integration.
+- **First milestone**: URL in → 6 branded static ads saved to disk with a `brand.json` file, no manual editing.
 
-### App 4: CLAUDE.md Generator + Token Optimizer
+---
 
-- **One-line pitch**: Point it at your repo or project folder and it produces an optimized CLAUDE.md that cuts Claude Code token usage by 50–70%.
-- **Motivating bookmarks**: 8, 23, 32, 35, 36
+### App 4: Second Brain Ingest — Karpathy-style compounding knowledge base
+
+- **One-line pitch**: A folder-watching agent that turns every PDF, YouTube link, tweet, and voice memo you drop in into structured, tagged notes that Claude Code can query as a personal knowledge graph.
+- **Motivating bookmarks**: 10, 11, 56, 5, 37, 90, 5
 - **Core features**:
-  - Repo scanner that infers stack, conventions, test runner, build commands
-  - Interactive interview ("who are you, what are your priorities") to fill in the 8 files Hassid recommends (about-me.md, voice.md, projects.md, etc.)
-  - Token-diff benchmark: runs a fixed task set with/without CLAUDE.md and reports savings
-  - Skills authoring wizard following Anthropic's Skills guide
-  - VS Code extension + CLI (`claudemd init`, `claudemd audit`)
-- **Stack**: TypeScript CLI (oclif); tree-sitter for code parsing; Anthropic SDK; VS Code Extension API.
-- **Scope**: small — pure dev tool, no infra.
-- **First milestone**: `npx claudemd init` in any Node repo produces a working CLAUDE.md and shows before/after token counts on one canned prompt.
+  - Watches an `inbox/` folder; auto-transcribes audio/video (Whisper), extracts articles, cleans HTML
+  - Runs a "Karpathy prompt chain": summary, key claims, contradictions with prior notes, open questions, tags
+  - Writes atomic Markdown notes with front-matter into an Obsidian-compatible vault, cross-linking to existing notes
+  - Nightly "consolidation" subagent that finds duplicate/related notes and proposes merges
+  - `/ask` command hits the vault with vector + keyword search before answering
+- **Stack**: Python (watchdog, whisper.cpp), Claude Agent SDK, sqlite-vss or LanceDB for embeddings, Markdown/Obsidian, yt-dlp, Readability
+- **Scope**: medium — ingest pipelines + retrieval + consolidation loop.
+- **First milestone**: Drop a YouTube URL in `inbox/` → within 2 minutes a linked, tagged note appears in the vault and `/ask` can answer questions using it.
 
-### App 5: LLM Council — Multi-Model Decision Engine
+---
 
-- **One-line pitch**: Ask one decision question and get 5 AI advisors (Claude, GPT-5, Gemini, Grok, DeepSeek) debate it, peer-review each other, and return a verdict.
-- **Motivating bookmarks**: 25, 45, 91
+### App 5: Overnight Ops — scheduled agent loops for solo operators
+
+- **One-line pitch**: A cron-driven agent runner that executes overnight loops (aging PRs, morning briefing, anomaly detection, inbox triage) and delivers a single morning report.
+- **Motivating bookmarks**: 2, 29, 31, 68, 41, 22, 40, 42
 - **Core features**:
-  - Persona library: "Charlie Munger-style skeptic", "Paul Graham startup advisor", "first-principles physicist", "lawyer", "operator"
-  - Round 1: each model answers independently with structured pros/cons
-  - Round 2: each model critiques the others' answers (role-reversal technique)
-  - Round 3: synthesizer produces verdict + confidence + dissenting opinions
-  - Decision log with replay so you can revisit past calls
-- **Stack**: Next.js + Vercel AI SDK; Anthropic + OpenAI + Google + xAI + DeepSeek APIs; Postgres; can ship as a Claude Skill (folder + SKILL.md).
-- **Scope**: small — orchestration logic over existing APIs.
-- **First milestone**: CLI command `council "should I take this job offer: <paste>"` returns markdown with 5 perspectives + verdict.
+  - Define agents as YAML: schedule, tools, MCP servers, output destination
+  - Ships templates: `pr-reviewer`, `inbox-triage`, `metrics-anomaly`, `daily-briefing`, `meta-ads-morning-brief`
+  - Each agent can spawn subagents to check its own work (verifier pattern)
+  - Single "morning digest" that consolidates all agent outputs into one email/Slack message with the one decision you must make before noon
+  - Web dashboard shows run history, token cost, and lets you rerun/edit prompts
+- **Stack**: Python + APScheduler (or Temporal), Claude Agent SDK, Postgres, FastAPI + a Next.js dashboard, Docker for isolated tool exec, Resend/Slack for delivery
+- **Scope**: medium — durable scheduler + agent runtime + UI.
+- **First milestone**: A single YAML agent runs at 6am, reads GitHub for aging PRs, and emails a summary.
 
-### App 6: Statement-to-Books — Bank PDF to Categorized Ledger
+---
 
-- **One-line pitch**: Upload a year of bank statements (PDF or CSV), get categorized income/expenses, recurring charges, and a P&L in 20 minutes.
-- **Motivating bookmarks**: 41, 42
+### App 6: Personal Life OS Dashboard
+
+- **One-line pitch**: One web dashboard that unifies calendar, tasks, goals, content pipeline, finances, and health, all queryable and mutable by a resident Claude agent.
+- **Motivating bookmarks**: 3, 53, 65, 66, 1
 - **Core features**:
-  - PDF parsing (tabular OCR) for the big US/UK/EU banks
-  - Claude-driven category assignment with merchant normalization ("AMZN MKTP US*" → "Amazon")
-  - Recurring-charge detector with cancellation candidates flagged
-  - Cashflow + category dashboard; export to QBO/Xero CSV
-  - Personal "wealth OS" mode: net worth, savings rate, alerts
-- **Stack**: Python FastAPI; Unstructured.io or LlamaParse for PDF; Claude Sonnet 4.5 for categorization; DuckDB for analytics; Next.js dashboard.
-- **Scope**: medium — PDF variance is the hard part.
-- **First milestone**: One Chase PDF in → categorized CSV out with >90% accuracy on a 50-transaction sample.
+  - Widget grid (calendar, tasks, KPI charts, content queue, net worth, weight/sleep) with drag-to-configure
+  - Each widget backed by an MCP connector (Google Cal, Todoist/Linear, Plaid, Notion, Whoop/Apple Health)
+  - Chat sidebar where Claude has read/write access to every widget's data
+  - "Ask my finances" mode: dump bank CSVs and get categorized income/expenses/recurring charges (Aria Westcott workflow built-in)
+  - Daily "state of me" auto-brief generated at 7am
+- **Stack**: Next.js + Tailwind + shadcn, Postgres, Plaid, Google APIs, Anthropic API, MCP servers per data source, Clerk for auth
+- **Scope**: large — many integrations and a real UI.
+- **First milestone**: Dashboard with 3 widgets (calendar, tasks, bank transactions) and a chat that can answer "what's on today and did I overspend last week?"
 
-### App 7: Overnight Agent Crew (Personal "AI Night Shift")
+---
 
-- **One-line pitch**: A scheduler that runs a team of overnight Claude Code agents to fix tests, write briefings, and draft your morning inbox.
-- **Motivating bookmarks**: 4, 6, 16, 17, 44, 57
+### App 7: Lead Sniper — Maps-scraping + pain-point cold email generator
+
+- **One-line pitch**: Type a niche and city, get every matching business from Google Maps enriched with review-mined pain points and a personalized cold email drafted for each.
+- **Motivating bookmarks**: 49, 35, 24
 - **Core features**:
-  - Cron-driven agent runner: code-agent, research-agent, numbers-agent, inbox-agent, briefing-agent
-  - Each agent has a sandboxed working directory + tool allowlist + checkpoint logging
-  - Morning report email at 7am summarizing every agent's output with diffs and "one decision to make before noon"
-  - Cost ceiling per agent per night; auto-stop on token blowup
-  - Computer-use task scheduler (Claude opens Meta Ads Manager, pulls data, saves brief)
-- **Stack**: Python; Claude Agent SDK + Claude Code; Temporal or BullMQ for scheduling; Docker per-agent sandboxes; SMTP for morning report.
-- **Scope**: large — orchestration + safety + cost control are non-trivial.
-- **First milestone**: One scheduled agent runs `claude -p` against a repo nightly, fixes flaky tests, opens a PR, emails a diff summary.
+  - Google Maps + Places scrape with 50+ fields per business (hours, site, reviews, photos count, response rate)
+  - Review analyzer: Claude extracts recurring complaints/complements per business
+  - Personalized email drafts referencing specific negative reviews and proposing a fix (e.g., speed-to-lead agent for HVAC)
+  - CSV/HubSpot export + optional Instantly/Smartlead send integration
+  - Guardrails: dedupe, opt-out list, per-domain send caps
+- **Stack**: Python + Playwright, Serper/Places API, Claude for extraction + drafting, Postgres, FastAPI, Instantly API
+- **Scope**: medium — scraping is the hard part; the AI layer is thin.
+- **First milestone**: Input "roofers in Austin" → CSV of 100 businesses with reviews summarized and one personalized email per row.
 
-### App 8: Personal Life OS Dashboard
+---
 
-- **One-line pitch**: A single screen tying calendar, tasks, goals, finances, content pipeline, and health to a chat-driven Claude operator.
-- **Motivating bookmarks**: 12, 28, 31, 33, 40
+### App 8: Speed-to-Lead Agent for Local Services
+
+- **One-line pitch**: An AI SMS/WhatsApp responder that answers new Yelp/GMB/website leads in under 60 seconds, qualifies them, and books an appointment on the owner's calendar.
+- **Motivating bookmarks**: 35, 25, 100
 - **Core features**:
-  - OAuth-connected widgets: Google Calendar, Notion/Todoist, Plaid (finances), Apple Health/Whoop, Buffer/Typefully
-  - "Chief of staff" chat panel grounded in the day's data (RAG over today + last 7 days)
-  - Karpathy-style ingestion: paste an article/video/tweet → it's summarized and indexed into your second brain
-  - Weekly review generator and goal-drift alerts
-  - Native Claude Project + MCP server so you can drive the same data from the Claude app
-- **Stack**: Next.js + Supabase; Plaid; Google APIs; Whoop API; pgvector for second brain; MCP server in TypeScript.
-- **Scope**: large — many integrations.
-- **First milestone**: Calendar + Todoist connected, chat answers "what should I focus on today?" with citations to actual events/tasks.
+  - Webhook receivers for Yelp Leads, Google LSA, Jotform, Facebook Lead Ads
+  - Persona per business (voice, pricing, service area) trained from an intake form
+  - WhatsApp + SMS conversation via OpenWA / Twilio; escalation to owner on high-intent triggers
+  - Google Calendar booking with buffer/travel-time rules
+  - Owner dashboard: response times, conversion, transcripts, human-takeover button
+- **Stack**: Node.js + Fastify, OpenWA or Twilio, Claude for conversation, Google Calendar API, Postgres, Next.js dashboard, Pusher for live handoff
+- **Scope**: medium — the conversational quality bar is high.
+- **First milestone**: A test lead into a webhook triggers a WhatsApp reply within 60 seconds that books a slot on a real calendar.
 
-### App 9: SEO Programmatic Content Engine
+---
 
-- **One-line pitch**: Feed it a domain and it generates a keyword-mapped programmatic SEO content plan plus drafts, ready to publish.
-- **Motivating bookmarks**: 9, 14, 43, 50, 74
+### App 9: Contract Red-Flag Reviewer
+
+- **One-line pitch**: Drop a contract PDF, get a startup-lawyer-grade review with risks, unfair terms, and suggested redlines annotated on the document.
+- **Motivating bookmarks**: 127, 23, 86
 - **Core features**:
-  - Domain audit: pulls existing pages, ranks, gaps via DataForSEO/Ahrefs API
-  - Keyword cluster generator using SERP-overlap clustering
-  - Per-cluster brief: intent, entities, internal links, schema
-  - Long-form draft generator with citations and FAQ schema, EEAT-aware
-  - Direct publish to WordPress/Webflow/Ghost; performance tracker
-- **Stack**: Python; DataForSEO API; Claude Sonnet 4.5; Postgres; WordPress REST API.
-- **Scope**: medium — content quality bar and dedup are the hard parts.
-- **First milestone**: Input domain + seed keyword → 20-keyword cluster map with one drafted article.
+  - PDF/DOCX ingestion with clause-level segmentation
+  - Applies Matt Shumer's senior-startup-lawyer prompt plus a "Red Team" pass that argues from the counterparty's side
+  - Per-clause risk score (fatal / negotiate / accept) with rationale and proposed alternate wording
+  - Exports annotated PDF and a redline DOCX
+  - Optional playbook mode: check against a saved "standard terms" file (custom playbook per user/company)
+- **Stack**: Python, PyMuPDF, docx, Claude Opus, FastAPI, Next.js upload UI, S3 for storage
+- **Scope**: small — a focused vertical wrapper around one strong prompt chain.
+- **First milestone**: Upload a SaaS MSA, receive a marked-up PDF with 10+ flagged clauses and rewrite suggestions.
 
-### App 10: Contract Risk Scanner
+---
 
-- **One-line pitch**: Upload a contract PDF and get a startup-lawyer-style risk report flagging unfair terms, missing clauses, and negotiation points.
-- **Motivating bookmarks**: 104
+### App 10: Reels Voiceover Studio
+
+- **One-line pitch**: Turn a rough idea or article into a scroll-stopping 30-second reels voiceover script plus a cloned-voice MP3 ready to drop into CapCut.
+- **Motivating bookmarks**: 55, 52, 105, 67, 74, 98
 - **Core features**:
-  - PDF/DOCX upload, clause segmentation
-  - Risk taxonomy (IP assignment, liability caps, exclusivity, auto-renew, MFN, non-compete)
-  - Side-by-side redline suggestions with rationale
-  - Templates: SAFE, MSA, NDA, employment, vendor agreement
-  - Track-changes export to Word
-- **Stack**: Next.js; LlamaParse for ingestion; Claude Sonnet 4.5 with structured output; docx.js for redlines.
-- **Scope**: small — single workflow, well-bounded.
-- **First milestone**: Upload an NDA → list of top 10 risks with quoted clauses and suggested edits.
+  - Idea/URL → 3 hook variations optimized for first-2-second retention
+  - Script writer trained on high-retention structures (pattern interrupt → payoff → CTA)
+  - Voice cloning from 5-second sample using Chatterbox Turbo (self-hosted) with paralinguistic tag support
+  - Per-clip captions timeline export (SRT + JSON for CapCut/Descript)
+  - "Series mode" that plans 30 clips across a theme with escalating hooks
+- **Stack**: Next.js, Python worker, Chatterbox Turbo (self-hosted on GPU), Claude for scripting, ffmpeg, Supabase
+- **Scope**: medium — voice model hosting adds ops.
+- **First milestone**: Text idea in → 30-sec script + cloned-voice MP3 + SRT file out.
 
-### App 11: Persona Voice Studio (Voice Clone + Script + Reels)
+---
 
-- **One-line pitch**: Clone your voice from 5 seconds of audio, then auto-generate Reels voiceovers from any topic using scroll-stopping script templates.
-- **Motivating bookmarks**: 27, 30, 81
+### App 11: PromptOps — versioned prompt/skill library with A/B testing
+
+- **One-line pitch**: A Git-backed store for prompts, skills, and CLAUDE.md files with evals, A/B testing, and one-click sync into Claude Code / Projects.
+- **Motivating bookmarks**: 84, 97, 110, 111, 114, 48, 60, 33
 - **Core features**:
-  - 5-second voice enrollment via Chatterbox Turbo (MIT-licensed)
-  - Topic → 30-second script with 2-second hook generator
-  - TTS with paralinguistic tags (laughter, emphasis)
-  - Auto B-roll matcher from Pexels + caption burn-in
-  - Bulk: 30 scripts/day pipeline with publishing queue
-- **Stack**: Python; Chatterbox Turbo (self-hosted on Modal/Runpod); Claude for scripts; ffmpeg + Remotion for video; Buffer API for posting.
-- **Scope**: medium — voice infra hosting is the main cost.
-- **First milestone**: Web form: upload 5s sample + topic → downloadable MP4 of voiced 30-second clip with captions.
+  - Browse/search a curated library of role packs (SEO, Ads, Finance, ADHD Executive Function, Red Team, First Principles) with metadata (author, model, token usage)
+  - `promptops pull <pack>` installs into your `.claude/` folder
+  - Eval harness: run any prompt against a saved test set with pass/fail rubrics and diff outputs across versions/models
+  - A/B compare Opus vs Sonnet vs Gemini on the same task with cost/quality chart
+  - Community submissions gated by eval scores, not upvotes
+- **Stack**: TypeScript, Next.js, Postgres, Anthropic + Gemini + OpenAI SDKs, GitHub OAuth, S3, Vercel
+- **Scope**: medium — library is easy, evals are the differentiator.
+- **First milestone**: Install one role pack via CLI, then re-run an eval set and see cost/quality delta versus baseline.
