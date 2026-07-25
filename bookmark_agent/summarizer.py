@@ -122,15 +122,26 @@ Order them by how strongly the bookmarks support the idea (strongest first). Ski
 that are speculative or only loosely connected to the bookmarks."""
 
 
-def main() -> int:
-    if not IN_FILE.exists():
-        print(f"Missing {IN_FILE}. Run enricher.py first.", file=sys.stderr)
+def main(
+    in_file: Path = IN_FILE,
+    out_file: Path = OUT_FILE,
+    label: str = "Bookmark Analysis",
+    context_note: str = "",
+) -> int:
+    if not in_file.exists():
+        print(f"Missing {in_file}. Run enricher.py first.", file=sys.stderr)
         return 1
     if not os.environ.get("ANTHROPIC_API_KEY"):
         print("Set ANTHROPIC_API_KEY in your environment.", file=sys.stderr)
         return 1
 
-    enriched = json.loads(IN_FILE.read_text())
+    enriched = json.loads(in_file.read_text())
+    if not enriched:
+        out_file.write_text(
+            f"# {label}\n\nNo bookmarks to summarize this run.\n"
+        )
+        print(f"Empty corpus, wrote a placeholder to {out_file}")
+        return 0
     print(f"Summarizing {len(enriched)} bookmarks with {MODEL}.")
 
     corpus = format_corpus(enriched)
@@ -138,17 +149,23 @@ def main() -> int:
 
     client = anthropic.Anthropic()
 
+    themes_prompt = THEMES_PROMPT
+    ideas_prompt = IDEAS_PROMPT
+    if context_note:
+        themes_prompt = context_note + "\n\n" + THEMES_PROMPT
+        ideas_prompt = context_note + "\n\n" + IDEAS_PROMPT
+
     print("\n=== PASS 1: THEMES ===\n")
-    themes = run_pass(client, corpus, THEMES_PROMPT)
+    themes = run_pass(client, corpus, themes_prompt)
 
     print("\n\n=== PASS 2: APP IDEAS ===\n")
-    ideas = run_pass(client, corpus, IDEAS_PROMPT)
+    ideas = run_pass(client, corpus, ideas_prompt)
 
-    OUT_FILE.write_text(
-        f"# Bookmark Analysis\n\nGenerated from {len(enriched)} bookmarks.\n\n"
+    out_file.write_text(
+        f"# {label}\n\nGenerated from {len(enriched)} bookmarks.\n\n"
         f"## Themes\n\n{themes}\n\n## App Ideas\n\n{ideas}\n"
     )
-    print(f"\nWrote {OUT_FILE}")
+    print(f"\nWrote {out_file}")
     return 0
 
 

@@ -1,8 +1,12 @@
 .auth/
 data/bookmarks.json
+data/bookmarks-new-*.json
 data/enriched.json
+data/enriched-new-*.json
 data/summary.md
+data/summary-new-*.md
 data/manual_audio/
+state/
 .venv/
 __pycache__/
 *.pyc

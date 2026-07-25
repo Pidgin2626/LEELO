@@ -140,13 +140,17 @@ def enrich(bookmark: dict) -> dict:
     }
 
 
-def main() -> int:
-    if not IN_FILE.exists():
-        print(f"Missing {IN_FILE}. Run exporter.py first.", file=sys.stderr)
+def main(in_file: Path = IN_FILE, out_file: Path = OUT_FILE) -> int:
+    if not in_file.exists():
+        print(f"Missing {in_file}. Run exporter.py first.", file=sys.stderr)
         return 1
 
-    bookmarks = json.loads(IN_FILE.read_text())
-    print(f"Enriching {len(bookmarks)} bookmarks.")
+    bookmarks = json.loads(in_file.read_text())
+    if not bookmarks:
+        print(f"{in_file} is empty — nothing to enrich.")
+        out_file.write_text("[]")
+        return 0
+    print(f"Enriching {len(bookmarks)} bookmarks from {in_file.name}.")
 
     enriched: list[dict] = []
     for i, bm in enumerate(bookmarks, 1):
@@ -157,8 +161,8 @@ def main() -> int:
             print(f"    error: {e}", file=sys.stderr)
             enriched.append({**bm, "enrichment": {"error": str(e)}})
 
-    OUT_FILE.write_text(json.dumps(enriched, indent=2, ensure_ascii=False))
-    print(f"Wrote {OUT_FILE}")
+    out_file.write_text(json.dumps(enriched, indent=2, ensure_ascii=False))
+    print(f"Wrote {out_file}")
     return 0
 
 
