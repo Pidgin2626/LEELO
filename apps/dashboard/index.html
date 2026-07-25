@@ -42,6 +42,8 @@
   }
   .keybar .status { font-size: 12px; color: var(--muted); }
   .keybar .status.ok { color: var(--ok); }
+  .keybar .remember { font-size: 12px; color: var(--muted); display: flex; align-items: center; gap: 4px; flex-shrink: 0; cursor: pointer; }
+  .keybar .remember input { accent-color: var(--accent); }
 
   .caption { color: var(--muted); font-size: 12px; margin: 0 0 16px; }
 
@@ -135,18 +137,19 @@
   <div class="keybar">
     <label>Anthropic API key</label>
     <input id="apiKey" type="password" placeholder="sk-ant-... (needed only for the CEO chat)">
+    <label class="remember"><input type="checkbox" id="rememberKey"> remember on this browser</label>
     <span id="keyStatus" class="status">not set</span>
   </div>
-  <p class="caption">Key lives in this page's memory only — not written to disk, cookies, or localStorage. Closing the tab forgets it. Only used by the CEO chat below.</p>
+  <p class="caption">If "remember" is checked, the key is saved in this browser's local storage — never sent anywhere except api.anthropic.com. Uncheck and reload to forget it. Only used by the CEO chat below.</p>
 
   <h2>Your tools</h2>
   <div class="grid" id="toolsGrid"></div>
 
   <h2>Your reports</h2>
   <div class="reports">
-    <a href="../../bookmark_agent/data/summary.md" target="_blank"><span class="emoji">📋</span><span><b>summary.md</b> — themes from your bookmarks + 11 app ideas</span></a>
-    <a href="../../bookmark_agent/data/tools.md" target="_blank"><span class="emoji">🛒</span><span><b>tools.md</b> — top 5 tools to try, full list, skip list</span></a>
-    <a href="../../bookmark_agent/data/contradictions.md" target="_blank"><span class="emoji">⚖️</span><span><b>contradictions.md</b> — where your sources disagree, and who wins</span></a>
+    <a href="https://github.com/Pidgin2626/LEELO/blob/claude/x-bookmark-app-builder-AG8sr/bookmark_agent/data/summary.md" target="_blank"><span class="emoji">📋</span><span><b>summary.md</b> — themes from your bookmarks + 11 app ideas</span></a>
+    <a href="https://github.com/Pidgin2626/LEELO/blob/claude/x-bookmark-app-builder-AG8sr/bookmark_agent/data/tools.md" target="_blank"><span class="emoji">🛒</span><span><b>tools.md</b> — top 5 tools to try, full list, skip list</span></a>
+    <a href="https://github.com/Pidgin2626/LEELO/blob/claude/x-bookmark-app-builder-AG8sr/bookmark_agent/data/contradictions.md" target="_blank"><span class="emoji">⚖️</span><span><b>contradictions.md</b> — where your sources disagree, and who wins</span></a>
   </div>
 
   <h2>Ask CEO</h2>
@@ -280,19 +283,49 @@ function escapeHtml(s) {
 renderTools();
 
 // ---------------------------------------------------------------------------
-// API key status
+// API key + "remember" persistence (localStorage on this browser only)
 // ---------------------------------------------------------------------------
+const KEY_STORAGE = "leelo.anthropic.key";
+const REMEMBER_STORAGE = "leelo.anthropic.remember";
 const apiKeyInput = document.getElementById("apiKey");
-apiKeyInput.addEventListener("input", () => {
-  const status = document.getElementById("keyStatus");
+const rememberBox = document.getElementById("rememberKey");
+const keyStatus = document.getElementById("keyStatus");
+
+function setKeyStatus() {
   if (apiKeyInput.value.trim()) {
-    status.textContent = "set ✓";
-    status.classList.add("ok");
+    keyStatus.textContent = rememberBox.checked ? "saved on this browser ✓" : "set for this session ✓";
+    keyStatus.classList.add("ok");
   } else {
-    status.textContent = "not set";
-    status.classList.remove("ok");
+    keyStatus.textContent = "not set";
+    keyStatus.classList.remove("ok");
   }
-});
+}
+
+function persistIfWanted() {
+  if (rememberBox.checked && apiKeyInput.value.trim()) {
+    try {
+      localStorage.setItem(KEY_STORAGE, apiKeyInput.value.trim());
+      localStorage.setItem(REMEMBER_STORAGE, "1");
+    } catch (_) {}
+  } else {
+    try {
+      localStorage.removeItem(KEY_STORAGE);
+      if (!rememberBox.checked) localStorage.removeItem(REMEMBER_STORAGE);
+    } catch (_) {}
+  }
+}
+
+// Load any saved key on page open
+try {
+  const savedRemember = localStorage.getItem(REMEMBER_STORAGE);
+  const savedKey = localStorage.getItem(KEY_STORAGE);
+  if (savedRemember === "1") rememberBox.checked = true;
+  if (savedKey) apiKeyInput.value = savedKey;
+} catch (_) {}
+setKeyStatus();
+
+apiKeyInput.addEventListener("input", () => { setKeyStatus(); persistIfWanted(); });
+rememberBox.addEventListener("change", () => { setKeyStatus(); persistIfWanted(); });
 
 // ---------------------------------------------------------------------------
 // CEO chat — Claude with a system prompt describing every tool.
