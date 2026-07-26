@@ -279,6 +279,17 @@ function escapeHtml(s) {
 renderTools();
 
 // ---------------------------------------------------------------------------
+// CEO chat — talks to the leelo-brain Cloudflare Worker.
+// The Worker holds the Anthropic key and the CEO system prompt server-side.
+// The token below only unlocks YOUR Worker — Anthropic doesn't see it.
+// If ever leaked / abused: rotate DASHBOARD_TOKEN in Cloudflare + this string.
+// ---------------------------------------------------------------------------
+const WORKER_URL = "https://leelo-brain.johnmejia14.workers.dev";
+const BAKED_TOKEN = "LEELO-dashboard-Ez7mQ2pK9wN4xR8vT3jL6bYcHgF5aS";
+
+const messages = [];
+
+// ---------------------------------------------------------------------------
 // Worker health check — verify leelo-brain is reachable on page load
 // ---------------------------------------------------------------------------
 const brainStatus = document.getElementById("brainStatus");
@@ -297,17 +308,6 @@ async function pingBrain() {
   }
 }
 pingBrain();
-
-// ---------------------------------------------------------------------------
-// CEO chat — talks to the leelo-brain Cloudflare Worker.
-// The Worker holds the Anthropic key and the CEO system prompt server-side.
-// The token below only unlocks YOUR Worker — Anthropic doesn't see it.
-// If ever leaked / abused: rotate DASHBOARD_TOKEN in Cloudflare + this string.
-// ---------------------------------------------------------------------------
-const WORKER_URL = "https://leelo-brain.johnmejia14.workers.dev";
-const BAKED_TOKEN = "LEELO-dashboard-Ez7mQ2pK9wN4xR8vT3jL6bYcHgF5aS";
-
-const messages = [];
 
 function appendMessage(role, text, cls) {
   const t = document.getElementById("transcript");
