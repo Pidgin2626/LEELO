@@ -135,7 +135,7 @@
   <p class="tagline">Your toolkit, one page. Cards to launch tools. Reports to read. A CEO to ask when you're stuck.</p>
 
   <div class="keybar">
-    <span id="brainStatus" class="status">checking leelo-brain…</span>
+    <span id="brainStatus" class="status ok">wired to leelo-brain (Cloudflare Worker) — ask below</span>
   </div>
 
   <h2>Your tools</h2>
@@ -289,25 +289,8 @@ const BAKED_TOKEN = "LEELO-dashboard-Ez7mQ2pK9wN4xR8vT3jL6bYcHgF5aS";
 
 const messages = [];
 
-// ---------------------------------------------------------------------------
-// Worker health check — verify leelo-brain is reachable on page load
-// ---------------------------------------------------------------------------
-const brainStatus = document.getElementById("brainStatus");
-
-async function pingBrain() {
-  try {
-    const r = await fetch(WORKER_URL + "/", { method: "GET" });
-    if (r.ok) {
-      brainStatus.textContent = "connected via leelo-brain (Cloudflare Worker) ✓";
-      brainStatus.classList.add("ok");
-    } else {
-      brainStatus.textContent = "leelo-brain returned " + r.status + " — check the Worker";
-    }
-  } catch (e) {
-    brainStatus.textContent = "can't reach leelo-brain: " + (e.message || e);
-  }
-}
-pingBrain();
+// Reachability is verified by the first chat message — errors surface in
+// the chat pane rather than on load, so a static "wired" status is enough.
 
 function appendMessage(role, text, cls) {
   const t = document.getElementById("transcript");
