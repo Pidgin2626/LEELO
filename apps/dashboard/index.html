@@ -135,12 +135,8 @@
   <p class="tagline">Your toolkit, one page. Cards to launch tools. Reports to read. A CEO to ask when you're stuck.</p>
 
   <div class="keybar">
-    <label>Dashboard access token</label>
-    <input id="apiKey" type="password" placeholder="the DASHBOARD_TOKEN you set in Cloudflare">
-    <label class="remember"><input type="checkbox" id="rememberKey"> remember on this browser</label>
-    <span id="keyStatus" class="status">not set</span>
+    <span id="brainStatus" class="status">checking leelo-brain…</span>
   </div>
-  <p class="caption">This is the DASHBOARD_TOKEN you set on the leelo-brain Worker in Cloudflare — NOT your Anthropic key. The token unlocks the Worker; the Worker talks to Claude with the Anthropic key it holds. If "remember" is checked, the token is saved in this browser's local storage only.</p>
 
   <h2>Your tools</h2>
   <div class="grid" id="toolsGrid"></div>
@@ -283,55 +279,33 @@ function escapeHtml(s) {
 renderTools();
 
 // ---------------------------------------------------------------------------
-// API key + "remember" persistence (localStorage on this browser only)
+// Worker health check — verify leelo-brain is reachable on page load
 // ---------------------------------------------------------------------------
-const KEY_STORAGE = "leelo.anthropic.key";
-const REMEMBER_STORAGE = "leelo.anthropic.remember";
-const apiKeyInput = document.getElementById("apiKey");
-const rememberBox = document.getElementById("rememberKey");
-const keyStatus = document.getElementById("keyStatus");
+const brainStatus = document.getElementById("brainStatus");
 
-function setKeyStatus() {
-  if (apiKeyInput.value.trim()) {
-    keyStatus.textContent = rememberBox.checked ? "saved on this browser ✓" : "set for this session ✓";
-    keyStatus.classList.add("ok");
-  } else {
-    keyStatus.textContent = "not set";
-    keyStatus.classList.remove("ok");
+async function pingBrain() {
+  try {
+    const r = await fetch(WORKER_URL + "/", { method: "GET" });
+    if (r.ok) {
+      brainStatus.textContent = "connected via leelo-brain (Cloudflare Worker) ✓";
+      brainStatus.classList.add("ok");
+    } else {
+      brainStatus.textContent = "leelo-brain returned " + r.status + " — check the Worker";
+    }
+  } catch (e) {
+    brainStatus.textContent = "can't reach leelo-brain: " + (e.message || e);
   }
 }
-
-function persistIfWanted() {
-  if (rememberBox.checked && apiKeyInput.value.trim()) {
-    try {
-      localStorage.setItem(KEY_STORAGE, apiKeyInput.value.trim());
-      localStorage.setItem(REMEMBER_STORAGE, "1");
-    } catch (_) {}
-  } else {
-    try {
-      localStorage.removeItem(KEY_STORAGE);
-      if (!rememberBox.checked) localStorage.removeItem(REMEMBER_STORAGE);
-    } catch (_) {}
-  }
-}
-
-// Load any saved key on page open
-try {
-  const savedRemember = localStorage.getItem(REMEMBER_STORAGE);
-  const savedKey = localStorage.getItem(KEY_STORAGE);
-  if (savedRemember === "1") rememberBox.checked = true;
-  if (savedKey) apiKeyInput.value = savedKey;
-} catch (_) {}
-setKeyStatus();
-
-apiKeyInput.addEventListener("input", () => { setKeyStatus(); persistIfWanted(); });
-rememberBox.addEventListener("change", () => { setKeyStatus(); persistIfWanted(); });
+pingBrain();
 
 // ---------------------------------------------------------------------------
 // CEO chat — talks to the leelo-brain Cloudflare Worker.
 // The Worker holds the Anthropic key and the CEO system prompt server-side.
+// The token below only unlocks YOUR Worker — Anthropic doesn't see it.
+// If ever leaked / abused: rotate DASHBOARD_TOKEN in Cloudflare + this string.
 // ---------------------------------------------------------------------------
 const WORKER_URL = "https://leelo-brain.johnmejia14.workers.dev";
+const BAKED_TOKEN = "LEELO-dashboard-Ez7mQ2pK9wN4xR8vT3jL6bYcHgF5aS";
 
 const messages = [];
 
@@ -362,9 +336,8 @@ function renderMarkdown(text) {
 }
 
 async function ask() {
-  const key = apiKeyInput.value.trim();
+  const key = BAKED_TOKEN;
   const msg = document.getElementById("userMsg").value.trim();
-  if (!key) { appendMessage("error", "Set your Anthropic API key up top first.", "error"); return; }
   if (!msg) return;
 
   document.getElementById("userMsg").value = "";
