@@ -348,7 +348,13 @@ async function ask() {
     }
     const data = await resp.json();
     const text = (data.content || []).filter(b => b.type === "text").map(b => b.text).join("").trim();
-    if (!text) throw new Error("Empty response from Claude.");
+    if (!text) {
+      const errDetail =
+        (data.error && (data.error.message || JSON.stringify(data.error))) ||
+        data.message ||
+        ("HTTP " + (data._http_status || "?") + " — " + JSON.stringify(data).slice(0, 400));
+      throw new Error("Claude returned no text. Details: " + errDetail);
+    }
     messages.push({ role: "assistant", content: text });
     bodyEl.innerHTML = renderMarkdown(text);
   } catch (e) {
