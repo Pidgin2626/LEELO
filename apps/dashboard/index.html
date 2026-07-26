@@ -135,12 +135,12 @@
   <p class="tagline">Your toolkit, one page. Cards to launch tools. Reports to read. A CEO to ask when you're stuck.</p>
 
   <div class="keybar">
-    <label>Anthropic API key</label>
-    <input id="apiKey" type="password" placeholder="sk-ant-... (needed only for the CEO chat)">
+    <label>Dashboard access token</label>
+    <input id="apiKey" type="password" placeholder="the DASHBOARD_TOKEN you set in Cloudflare">
     <label class="remember"><input type="checkbox" id="rememberKey"> remember on this browser</label>
     <span id="keyStatus" class="status">not set</span>
   </div>
-  <p class="caption">If "remember" is checked, the key is saved in this browser's local storage — never sent anywhere except api.anthropic.com. Uncheck and reload to forget it. Only used by the CEO chat below.</p>
+  <p class="caption">This is the DASHBOARD_TOKEN you set on the leelo-brain Worker in Cloudflare — NOT your Anthropic key. The token unlocks the Worker; the Worker talks to Claude with the Anthropic key it holds. If "remember" is checked, the token is saved in this browser's local storage only.</p>
 
   <h2>Your tools</h2>
   <div class="grid" id="toolsGrid"></div>
@@ -328,49 +328,10 @@ apiKeyInput.addEventListener("input", () => { setKeyStatus(); persistIfWanted();
 rememberBox.addEventListener("change", () => { setKeyStatus(); persistIfWanted(); });
 
 // ---------------------------------------------------------------------------
-// CEO chat — Claude with a system prompt describing every tool.
+// CEO chat — talks to the leelo-brain Cloudflare Worker.
+// The Worker holds the Anthropic key and the CEO system prompt server-side.
 // ---------------------------------------------------------------------------
-const MODEL = "claude-sonnet-4-20250514";
-const API_URL = "https://api.anthropic.com/v1/messages";
-
-function buildToolsManifest() {
-  return TOOLS.map((t) => {
-    const lines = [
-      `TOOL: ${t.name}`,
-      `WHAT: ${t.desc}`,
-      `WHEN: ${t.when}`,
-    ];
-    if (t.cmd) lines.push(`COMMAND: ${t.cmd}`);
-    if (t.launch) lines.push(`LAUNCH: double-click ${t.launch}`);
-    if (t.extras) {
-      for (const e of t.extras) lines.push(`ALSO (${e.label}): ${e.cmd}`);
-    }
-    return lines.join("\n");
-  }).join("\n\n");
-}
-
-const CEO_SYSTEM = `You are LEELO Control — John's CEO agent. John is a beginner coder on Windows PowerShell running a personal AI toolkit he built.
-
-Here is John's toolkit — every command below can be pasted into PowerShell:
-
-${buildToolsManifest()}
-
-REPORTS John already has generated (Markdown files on his disk):
-- bookmark_agent/data/summary.md — themes from his X bookmarks + 11 candidate app ideas
-- bookmark_agent/data/tools.md — top 5 tools to try + full alphabetical list + skip list
-- bookmark_agent/data/contradictions.md — 2 genuine disagreements in what he follows + picked winners
-
-YOUR JOB when John talks to you:
-1. Figure out what he actually needs. Ask ONE clarifying question only if the answer changes what you recommend. Otherwise commit.
-2. Pick the right tool from the list above (or the right report to read).
-3. Reply in this shape:
-   - One line: the tool or report to use, and why (very short).
-   - A code block with the EXACT command John should paste, OR a link to open.
-   - One line: what he'll see when it works.
-4. If no tool fits, just answer his question directly — briefly.
-5. If he wants a NEW tool built, name that clearly ("that would be a new build") and suggest he tell you to start it in a fresh message.
-
-Tone: terse, direct, warm. John is overwhelmed by his own toolkit. Don't lecture. Never repeat back what he just said. Never say "great question." Give him the one action.`;
+const WORKER_URL = "https://leelo-brain.johnmejia14.workers.dev";
 
 const messages = [];
 
@@ -415,24 +376,17 @@ async function ask() {
   const bodyEl = appendMessage("assistant", "…");
 
   try {
-    const resp = await fetch(API_URL, {
+    const resp = await fetch(WORKER_URL + "/chat", {
       method: "POST",
       headers: {
         "content-type": "application/json",
-        "x-api-key": key,
-        "anthropic-version": "2023-06-01",
-        "anthropic-dangerous-direct-browser-access": "true",
+        "authorization": "Bearer " + key,
       },
-      body: JSON.stringify({
-        model: MODEL,
-        max_tokens: 1500,
-        system: CEO_SYSTEM,
-        messages: messages,
-      }),
+      body: JSON.stringify({ messages: messages }),
     });
     if (!resp.ok) {
       let body = ""; try { body = await resp.text(); } catch(_) {}
-      if (resp.status === 401) throw new Error("Your API key was rejected (401).");
+      if (resp.status === 401) throw new Error("Your dashboard access token was rejected (401). Check DASHBOARD_TOKEN in Cloudflare.");
       if (resp.status === 429) throw new Error("Rate limited (429). Wait a moment and retry.");
       throw new Error("HTTP " + resp.status + ": " + body.slice(0, 300));
     }
